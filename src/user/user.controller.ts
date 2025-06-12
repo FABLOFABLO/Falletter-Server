@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } fro
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { SigninUserDto } from './dto/singin-user.dto';
+import { SignInUserDto } from './dto/singin-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('user')
@@ -10,7 +10,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('/signin')
-  signin(@Body() signinUserDto: SigninUserDto) {
+  signin(@Body() signinUserDto: SignInUserDto) {
     return this.userService.signin(signinUserDto);
   }
 
@@ -36,8 +36,8 @@ export class UserController {
     return this.userService.update(+userId, updateUserDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.userService.remove(id);
+  // }
 }

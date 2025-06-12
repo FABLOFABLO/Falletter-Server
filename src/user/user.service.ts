@@ -74,12 +74,14 @@ export class UserService {
     if(!user) throw new NotFoundException(`해당 유저는 존재하지 않습니다: ${user}`);
 
     Object.assign(user, updateUserDto);
-    return await this.userRepository.update(id, updateUserDto);
+    await this.userRepository.update(id, updateUserDto);
+
+    return user;
   }
 
-  async remove(id: string) {
-    // return `This action removes a #${id} user`;
-    await this.userRepository.delete(id);
-    return id;
-  }
+  // async remove(id: string) {
+  //   // return `This action removes a #${id} user`;
+  //   await this.userRepository.delete(id);
+  //   return id;
+  // }
 }
