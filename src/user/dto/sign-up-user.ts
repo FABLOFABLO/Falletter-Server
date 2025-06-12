@@ -1,6 +1,6 @@
 import { IsString, IsEmail, MinLength } from 'class-validator';
 
-export class CreateUserDto {
+export class SignUpUserDTO {
   name: string;
 
   @IsEmail({}, {message: "유효한 이메일 주소를 입력하여 주십시오"})
