@@ -1,23 +1,21 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { min } from "class-validator";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: "user"})
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({nullable: true})
+  @Column({nullable: true, length: 4})
   name: String;
   
   // @PrimaryColumn()
-  @Column({nullable: false})
+  @Column({nullable: false, length: 50})
   email: String;
 
-  @Column({nullable: false})
+  @Column({nullable: false, length: 100})
   pw: String;
 
   @CreateDateColumn()
-  createDate: Date;
-
-  @Column({nullable: true})
-  refreshToken: String;
+  createdDate: Date;
 }
