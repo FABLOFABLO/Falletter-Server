@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { SignUpUserDTO } from './dto/sign-up-user';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { SignInUserDto } from './dto/singin-user.dto';
+import { SignInUserDto } from './dto/sign-in-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('user')
@@ -15,21 +15,11 @@ export class UserController {
   }
 
   @Post('/signup')
-  signup(@Body() createUserDto: CreateUserDto){
-    return this.userService.signup(createUserDto);
+  signup(@Body() signUpuserDto: SignUpUserDTO){
+    return this.userService.signup(signUpuserDto);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.userService.findAll();
-  // }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.userService.findOne(+id);
-  // }
-
-  @Patch(':id')
+  @Patch('/update')
   @UseGuards(JwtAuthGuard)
   update(@Req() req: any, @Body() updateUserDto: UpdateUserDto) {
     const userId = req.user.sub;

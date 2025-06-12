@@ -1,12 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { SignUpUserDTO } from './dto/sign-up-user';
 import { UpdateUserDto } from './dto/update-user.dto';  
 
 import {UserEntity} from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { SignInUserDto } from './dto/singin-user.dto';
+import { SignInUserDto } from './dto/sign-in-user.dto';
 import { JwtService } from '@nestjs/jwt';
 const bcript = require('bcrypt');
 require('dotenv').config();
@@ -20,17 +20,17 @@ export class UserService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(createUserDto: CreateUserDto): Promise<UserEntity>{
+  async signup(signUpUserDto: SignUpUserDTO): Promise<UserEntity>{
     // return 'This action adds a new user';
 
-    if (!createUserDto.email.endsWith('@dsm.hs.kr')) {
+    if (!signUpUserDto.email.endsWith('@dsm.hs.kr')) {
       throw new BadRequestException('이메일은 @dsm.hs.kr 형식이어야합니다');
     }
 
-    const hashedPWD = await bcrypt.hash(createUserDto.pw, 10);
-    createUserDto.pw = hashedPWD;
+    const hashedPWD = await bcrypt.hash(signUpUserDto.pw, 10);
+    signUpUserDto.pw = hashedPWD;
     
-    const newUser = this.userRepository.create(createUserDto);
+    const newUser = this.userRepository.create(signUpUserDto);
     return await this.userRepository.save(newUser);
   }
 
@@ -44,8 +44,6 @@ export class UserService {
     const accessToken = this.jwtService.sign({sub: user.id, email: user.email}, {expiresIn: '1h'});
     const refreshToken = this.jwtService.sign({sug: user.id, email: user.email}, 
       {expiresIn: '30d', secret: process.env.JWT_REFRESH_SECRET || "defalt_secretKey"});
-
-    user.refreshToken = refreshToken;
 
     await this.userRepository.save(user);
 
@@ -72,6 +70,9 @@ export class UserService {
     const user = await this.userRepository.findOne({where: {id: id}});
 
     if(!user) throw new NotFoundException(`해당 유저는 존재하지 않습니다: ${user}`);
+
+    const hashedPWD = await bcrypt.hash(updateUserDto.pw, 10);
+    updateUserDto.pw = hashedPWD;
 
     Object.assign(user, updateUserDto);
     await this.userRepository.update(id, updateUserDto);
