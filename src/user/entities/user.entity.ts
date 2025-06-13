@@ -1,5 +1,5 @@
-import { min } from "class-validator";
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { GenderEnum } from "../dto/gender.enum";
 
 @Entity({name: "user"})
 export class UserEntity {
@@ -15,6 +15,12 @@ export class UserEntity {
 
   @Column({nullable: false, length: 100})
   pw: String;
+
+  @Column({type: 'enum'})
+  gender: GenderEnum;
+
+  @Column({length: 4})
+  stduent_num: number;
 
   @CreateDateColumn()
   createdDate: Date;
