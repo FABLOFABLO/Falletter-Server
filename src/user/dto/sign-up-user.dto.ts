@@ -4,6 +4,8 @@ import { GenderEnum } from './gender.enum';
 export class SignUpUserDTO {
   name: string;
 
+  student_num: number;
+
   @IsEmail({}, {message: "유효한 이메일 주소를 입력하여 주십시오"})
   email: string;
 

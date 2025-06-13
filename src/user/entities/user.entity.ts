@@ -16,11 +16,11 @@ export class UserEntity {
   @Column({nullable: false, length: 100})
   pw: String;
 
-  @Column({type: 'enum'})
+  @Column({type: 'enum', enum: GenderEnum})
   gender: GenderEnum;
 
-  @Column({length: 4})
-  stduent_num: number;
+  @Column()
+  student_num: number;
 
   @CreateDateColumn()
   createdDate: Date;
