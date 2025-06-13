@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { SignUpUserDTO } from './dto/sign-up-user';
+import { SignUpUserDTO } from './dto/sign-up-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';  
 
 import {UserEntity} from './entities/user.entity';
