@@ -5,7 +5,6 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
-import { LetterModule } from './letter/letter.module';
 require('dotenv').config();
 
 @Module({
@@ -24,7 +23,7 @@ require('dotenv').config();
       entities: [UserEntity],
       synchronize: true // 배포할때 주석처리하기
     }),    
-    UserModule, AuthModule, LetterModule,
+    UserModule, AuthModule, 
     /* the Module containing "UserEntityRepository" */],
   controllers: [AppController],
   providers: [AppService],

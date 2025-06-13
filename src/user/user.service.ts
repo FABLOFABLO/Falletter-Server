@@ -6,8 +6,8 @@ import {UserEntity} from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { SignInUserDto } from './dto/sign-in-user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { SignInUserDto } from './dto/sign-in-user.dto';
 const bcript = require('bcrypt');
 require('dotenv').config();
 
@@ -34,11 +34,11 @@ export class UserService {
     return await this.userRepository.save(newUser);
   }
 
-  async signin(SignInUserDto: SignInUserDto) {
-    const user = await this.findOneByEmail(SignInUserDto.email);
+  async signin(signInUserDto: SignInUserDto) {
+    const user = await this.findOneByEmail(signInUserDto.email);
     if(!user) throw new UnauthorizedException("존재하지 않는 이메일입니다.");
 
-    const isMatch = await bcript.compare(SignInUserDto.pw, user.pw);
+    const isMatch = await bcript.compare(signInUserDto.pw, user.pw);
     if(!isMatch) throw new UnauthorizedException("비밀번호가 일치하지 않습니다.");
 
     const accessToken = this.jwtService.sign({sub: user.id, email: user.email}, {expiresIn: '1h'});
@@ -80,9 +80,14 @@ export class UserService {
     return user;
   }
 
-  // async remove(id: string) {
-  //   // return `This action removes a #${id} user`;
-  //   await this.userRepository.delete(id);
-  //   return id;
-  // }
+  async remove(id: number) {
+    // return `This action removes a #${id} user`;
+
+    const user = await this.userRepository.findOne({where: {id: id}});
+
+    if(!user) throw new NotFoundException(`해당 유저는 존재하지 않습니다: ${user}`);
+    
+    await this.userRepository.delete(id);
+    return id;
+  }
 }

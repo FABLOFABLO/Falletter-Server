@@ -26,8 +26,9 @@ export class UserController {
     return this.userService.update(+userId, updateUserDto);
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(id);
-  // }
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  remove(@Param('id') id: number) {
+    return this.userService.remove(id);
+  }
 }
